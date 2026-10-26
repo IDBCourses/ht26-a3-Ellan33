@@ -1,10 +1,92 @@
 /* No CSS transitions or animations: everything that moves is moved by your code. */
 
-.shape {
-  width: 100px;
-  height: 100px;
-  background-color: deeppink;
+.neptunePlanet {
+  width: 125px;
+  height: 125px;
+  background-color: rgb(43, 43, 228);
   /* Positioned from the top-left of the window; setPosition() moves it from there. */
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+}
+
+.uranusPlanet {
+  width: 140px;
+  height: 140px;
+  background-color: rgb(91, 193, 236);
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+}
+
+.saturnPlanet {
+  width: 175px;
+  height: 175px;
+  background-color: rgb(255, 181, 20);
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+}
+
+.saturnRing {
+  width: 400px;
+  height: 100px;
+  background-color: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  box-sizing: border-box;
+  border: 20px solid rgb(255, 181, 20);
+}
+
+.jupiterPlanet {
+  width: 200px;
+  height: 200px;
+  background-color: rgb(208, 185, 139);
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+}
+
+.marsPlanet {
+  width: 70px;
+  height: 70px;
+  background-color: rgb(121, 20, 36);
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+}
+
+.earthPlanet {
+  width: 90px;
+  height: 90px;
+  background-color: rgb(39, 117, 60);
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+}
+
+.venusPlanet {
+  width: 85px;
+  height: 85px;
+  background-color: rgb(167, 103, 30);
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+}
+
+.mercuriePlanet {
+  width: 50px;
+  height: 50px;
+  background-color: rgb(184, 175, 176);
   position: absolute;
   top: 0;
   left: 0;
@@ -23,6 +105,7 @@ body {
   padding: 0;
   line-height: 1.5;
   font-family: system-ui, sans-serif;
+  background-color: black;
 }
 
 kbd {

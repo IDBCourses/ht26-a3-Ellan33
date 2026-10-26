@@ -2,9 +2,9 @@
 
 **Play it here:** <!-- Paste your GitHub Pages link here, e.g. https://idbcourses.github.io/your-repo-name/ -->
 
-**Name:** <!-- Your name and MAU ID -->
+**Name:** <!-- Ella Nedell, ar8228 -->
 
-<!-- One or two sentences: what kind of instrument is it, and what is it like to play? -->
+<!-- Musical solarsystem! Use diffrent mouse actions to create music with the planets. -->
 
 ## How to play
 
@@ -13,6 +13,16 @@
 | When you...  | The sound...                         | The shapes... |
 | ------------ | ------------------------------------ | ------------- |
 | Click or tap | Plays a C4 (the example: replace it) | Nothing yet   |
+| Hover        | Play a constent tune (D2 & C3)       | Nothing yet   |
+|              |                                      |               |
+|              |                                      |               |
+|              |                                      |               |
+|              |                                      |               |
+|              |                                      |               |
+|              |                                      |               |
+|              |                                      |               |
+|              |                                      |               |
+|              |                                      |               |
 |              |                                      |               |
 
 <!-- Anything else a player needs to know: how to get started, a good thing to try first. -->
