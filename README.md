@@ -2,28 +2,28 @@
 
 **Play it here:** <!-- Paste your GitHub Pages link here, e.g. https://idbcourses.github.io/your-repo-name/ -->
 
-**Name:** <!-- Ella Nedell, ar8228 -->
+**Name:** <!-- name --> Ella Nedell, ar8228
 
-<!-- Musical solarsystem! Use diffrent mouse actions to create music with the planets. -->
+<!-- --> Musical solarsystem! Use diffrent mouse actions to create music with the planets.
 
 ## How to play
 
 <!-- Fill in the table with a row for everything the player can do with the pointer: clicking, moving slowly or fast, moving in circles, holding still... Say what happens to the sound and to the shapes. If you added keys, give them rows too. -->
 
-| When you...  | The sound...                         | The shapes... |
-| ------------ | ------------------------------------ | ------------- |
-| Click or tap | Plays a C4 (the example: replace it) | Nothing yet   |
-| Hover        | Play a constent tune (D2 & C3)       | Nothing yet   |
-|              |                                      |               |
-|              |                                      |               |
-|              |                                      |               |
-|              |                                      |               |
-|              |                                      |               |
-|              |                                      |               |
-|              |                                      |               |
-|              |                                      |               |
-|              |                                      |               |
-|              |                                      |               |
+| When you...      | The sound...                            | The shapes... |
+| ---------------- | --------------------------------------- | ------------- |
+| Click Mars       | Plays a C3 in intervals                 | Nothing yet   |
+| Hover Neptune    | Play a constent tune D2                 | Nothing yet   |
+| Click Neptune    | Keeps playing while mouse is outside    |               |
+| Hover Saturn     | Play one note in note array             |               |
+| "Shift"          | Changes note being played in note array |               |
+| Click saturn     | Keeps playing while mouse is outside    |               |
+| Hover saturnRing | In progress                             |               |
+|                  |                                         |               |
+|                  |                                         |               |
+|                  |                                         |               |
+|                  |                                         |               |
+|                  |                                         |               |
 
 <!-- Anything else a player needs to know: how to get started, a good thing to try first. -->
 

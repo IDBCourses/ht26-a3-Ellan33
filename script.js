@@ -25,8 +25,16 @@ import { createShape } from "./shape.js";
 
 // ---------- Settings ----------
 // Settings variables should contain all of the "fixed" parts of your programs
-// For example: which notes you can play, how fast things move, the tempo.
-const note = "C4"; // the note played when the pointer goes down
+// For example: which notes you can play, how fast things move, the tempo.¨
+let drumInterval = null;
+let i = 0;
+let playingNote = null;
+let keepPlayingNeptune = false;
+let keepPlayingSaturn = false;
+let saturn;
+
+//Note array
+const notes = ["C2", "D2", "E2", "F2", "G2", "A2", "B2"];
 
 // ---------- State ----------
 // State variables are the parts of your program that change over time.
@@ -35,6 +43,7 @@ const note = "C4"; // the note played when the pointer goes down
 // ---------- Sound ----------
 // Make the instruments and plug them into the speakers.
 const synth = new Tone.PolySynth(Tone.Synth).toDestination(); // can play several notes at once
+const saturnSynth = new Tone.Synth().toDestination(); // for SaturnRing
 
 // ---------- Update ----------
 // Update the state. This is called every 100ms.
@@ -49,35 +58,113 @@ function use() {
 }
 
 // ---------- Controls (Event Handlers) ----------
-// Runs every time the pointer goes down: a click, a tap or a pen touch.
-function pointerDown(event) {
-  Tone.start(); // browsers only allow sound after the player has pressed something
 
-  console.log("Pointer down at", event.clientX, event.clientY);
-  synth.triggerAttackRelease(note, "8n"); // play the note for an eighth note
+//Function Mars
+function playMars() {
+  console.log("Cursor entered Mars");
+  synth.triggerAttackRelease("C3", "8n");
+}
+//function pointerdown, Mars
+async function toggleMars() {
+  await Tone.start();
+
+  if (drumInterval === null) {
+    // Start the beat
+    playMars();
+
+    drumInterval = setInterval(() => {
+      playMars();
+    }, 500);
+  } else {
+    // Stop the beat
+    clearInterval(drumInterval);
+    drumInterval = null;
+  }
 }
 
-//Function hover, Drum 1
-function playDrumSound() {
-  console.log("Cursor entered drum1!");
-  synth.triggerAttack("C3");
-}
-
-function stopDrumSound() {
-  synth.triggerRelease("C3");
-}
-
-//Function hover, Drum 2
-function playDrumSound2() {
-  console.log("Cursor entered drum2!");
+//Function hover, Neptune
+function playNeptune() {
+  console.log("Cursor entered Neptune!");
   synth.triggerAttack("D2");
 }
 
-function stopDrumSound2() {
+function stopNeptune() {
   synth.triggerRelease("D2");
 }
 
-//Function swipe
+//function pointerdown, Neptune
+async function toggleNeptune() {
+  await Tone.start();
+
+  if (!keepPlayingNeptune) {
+    keepPlayingNeptune = true;
+    playNeptune();
+  } else {
+    keepPlayingNeptune = false;
+    stopNeptune();
+  }
+}
+
+// Saturn play note
+function playSaturn() {
+  // Stop any previously playing note
+  if (playingNote !== null) {
+    synth.triggerRelease(playingNote);
+  }
+
+  // Play current note
+  playingNote = notes[i];
+  synth.triggerAttack(playingNote);
+}
+
+function stopSaturn() {
+  if (!keepPlayingSaturn && playingNote !== null) {
+    synth.triggerRelease(playingNote);
+    playingNote = null;
+  }
+}
+//pointerdown Saturn
+async function toggleNoteSaturn() {
+  await Tone.start();
+
+  if (!keepPlayingSaturn) {
+    keepPlayingSaturn = true;
+    playSaturn();
+  } else {
+    keepPlayingSaturn = false;
+    stopSaturn();
+  }
+}
+//Function Detune, SaturnRing
+
+async function playSaturnring() {
+  await Tone.start();
+
+  saturnSynth.triggerAttack(notes[i]);
+  console.log("Cursor entered Saturn");
+}
+
+function moveSaturnring(event) {
+  const rect = saturn.element.getBoundingClientRect();
+
+  // Mouse position across Saturn, from 0 to 1
+  const x = (event.clientX - rect.left) / rect.width;
+
+  // Keep the value between 0 and 1
+  const clampedX = Math.max(0, Math.min(1, x));
+
+  // Map the mouse position to -600 through +600 cents
+  const detune = clampedX * 1200 - 600;
+
+  // Change the pitch while the note is playing
+  saturnSynth.detune.value = detune;
+
+  console.log("X:", clampedX, "Detune:", detune);
+}
+
+function stopPlaySaturnring() {
+  saturnSynth.triggerRelease();
+}
 
 // ---------- Setup ----------
 // Setup is run once, at the start of the program. It sets everything up for us!
@@ -85,48 +172,41 @@ function setup() {
   update(); // start the update loop
   use(); // start the use loop
 
-  // Example: a shape near the middle of the window. Replace it with your own.
-
   //Drum2
-  const drum2 = createShape("neptune", "neptunePlanet");
-  drum2.setPosition(0.025, 0.5);
-
+  const neptune = createShape("neptune", "neptunePlanet");
   //drum1
-  const drum1 = createShape("uranus", "uranusPlanet");
-  drum1.setPosition(0.2, 0.75);
-
-  const saturn = createShape("saturn", "saturnPlanet");
-  saturn.setPosition(0.275, 0.175);
-
-  //Swipe
-  /*const swipe = createShape("swipe", "saturnRing");
-  swipe.setPosition(0.05, 0.2);
-  swipe.setRotation(10);
-  */
-
-
-  const jupiter = createShape("jupiter", "jupiterPlanet");
-  jupiter.setPosition(0.575, 0.625);
-
   const mars = createShape("mars", "marsPlanet");
-  mars.setPosition(0.650, 0.275);
+  //Saturn
+  saturn = createShape("saturn", "saturnPlanet");
+  //Saturn ring
+  const saturnRing = createShape("saturnRing", "saturnRing");
 
-  const earth = createShape("earth", "earthPlanet");
-  earth.setPosition(0.7, 0.0725);
+  //--------- Event listeners --------------------------------------------------
 
-  const venus = createShape("venus", "venusPlanet");
-  venus.setPosition(0.9, 0.275);
+  mars.element.addEventListener("pointerdown", toggleMars);
 
-  const mercurie = createShape("mercurie", "mercuriePlanet");
-  mercurie.setPosition(0.95, 0.125);
+  neptune.element.addEventListener("mouseenter", playNeptune);
+  neptune.element.addEventListener("mouseleave", stopNeptune);
+  neptune.element.addEventListener("pointerdown", toggleNeptune);
 
-  // Put your event listener code here
-  window.addEventListener("pointerdown", pointerDown);
-  drum1.element.addEventListener("mouseenter", playDrumSound);
-  drum1.element.addEventListener("mouseleave", stopDrumSound);
+  saturnRing.element.addEventListener("mouseenter", playSaturnring);
+  saturnRing.element.addEventListener("mousemove", moveSaturnring);
+  saturnRing.element.addEventListener("mouseleave", stopPlaySaturnring);
 
-  drum2.element.addEventListener("mouseenter", playDrumSound2);
-  drum2.element.addEventListener("mouseleave", stopDrumSound2);
+  saturn.element.addEventListener("mouseenter", playSaturn);
+  saturn.element.addEventListener("mouseleave", stopSaturn);
+  saturn.element.addEventListener("pointerdown", toggleNoteSaturn);
+
+  // Shift changes the note
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Shift" && !event.repeat) {
+      i = (i + 1) % notes.length;
+
+      // Change sound only if currently playing
+      if (playingNote !== null) {
+        playSaturn();
+      }
+    }
+  });
 }
-
 setup(); // Always remember to call setup()!
