@@ -24,8 +24,11 @@
 import { createShape } from "./shape.js";
 
 // ---------- Settings ----------
-// Settings variables should contain all of the "fixed" parts of your programs
-// For example: which notes you can play, how fast things move, the tempo.¨
+
+const notes = ["C2", "D2", "E2", "F2", "G2", "A2", "B2"];
+
+// ---------- State ----------
+
 let drumInterval = null;
 let i = 0;
 let playingNote = null;
@@ -33,17 +36,22 @@ let keepPlayingNeptune = false;
 let keepPlayingSaturn = false;
 let saturn;
 
-//Note array
-const notes = ["C2", "D2", "E2", "F2", "G2", "A2", "B2"];
-
-// ---------- State ----------
-// State variables are the parts of your program that change over time.
-// For example: where the pointer is, how fast it's moving, or whether a drone is on.
+// Mouse movement
+let previousX = 0;
+let previousY = 0;
+let mouseSpeed = 0;
+let speeds = [];
 
 // ---------- Sound ----------
-// Make the instruments and plug them into the speakers.
-const synth = new Tone.PolySynth(Tone.Synth).toDestination(); // can play several notes at once
+
 const saturnSynth = new Tone.Synth().toDestination(); // for SaturnRing
+const synth = new Tone.PolySynth(Tone.Synth);
+const reverb = new Tone.Reverb({
+  decay: 2,
+  wet: 0,
+}).toDestination();
+
+synth.connect(reverb);
 
 // ---------- Update ----------
 // Update the state. This is called every 100ms.
@@ -59,10 +67,41 @@ function use() {
 
 // ---------- Controls (Event Handlers) ----------
 
+let previousTime = 0;
+
+function pointerMove(event) {
+  const now = performance.now();
+
+  if (previousTime === 0) {
+    previousX = event.clientX;
+    previousY = event.clientY;
+    previousTime = now;
+    return;
+  }
+
+  const dx = event.clientX - previousX;
+  const dy = event.clientY - previousY;
+
+  const distance = Math.sqrt(dx * dx + dy * dy);
+  const time = (now - previousTime) / 1000;
+
+  // Calculate speed in pixels per second
+  mouseSpeed = distance / time;
+
+  previousX = event.clientX;
+  previousY = event.clientY;
+  previousTime = now;
+
+  // Map speed to reverb
+  const reverbAmount = Math.min(mouseSpeed / 1000, 0.9);
+
+  reverb.wet.rampTo(reverbAmount, 0.1);
+
+}
+
 //Function Mars
 function playMars() {
-  console.log("Cursor entered Mars");
-  synth.triggerAttackRelease("C3", "8n");
+  synth.triggerAttackRelease("C2", "8n");
 }
 //function pointerdown, Mars
 async function toggleMars() {
@@ -71,6 +110,7 @@ async function toggleMars() {
   if (drumInterval === null) {
     // Start the beat
     playMars();
+    console.log("Play Mars");
 
     drumInterval = setInterval(() => {
       playMars();
@@ -79,6 +119,7 @@ async function toggleMars() {
     // Stop the beat
     clearInterval(drumInterval);
     drumInterval = null;
+    console.log("Stop playing Mars");
   }
 }
 
@@ -99,9 +140,11 @@ async function toggleNeptune() {
   if (!keepPlayingNeptune) {
     keepPlayingNeptune = true;
     playNeptune();
+    console.log("Playing Neptune");
   } else {
     keepPlayingNeptune = false;
     stopNeptune();
+    console.log("Stop playing Neptune");
   }
 }
 
@@ -115,6 +158,7 @@ function playSaturn() {
   // Play current note
   playingNote = notes[i];
   synth.triggerAttack(playingNote);
+  console.log("playing note:", notes[i])
 }
 
 function stopSaturn() {
@@ -130,18 +174,20 @@ async function toggleNoteSaturn() {
   if (!keepPlayingSaturn) {
     keepPlayingSaturn = true;
     playSaturn();
+     console.log("Play Saturn")
   } else {
     keepPlayingSaturn = false;
     stopSaturn();
+    console.log("Stop playing Saturn");
   }
 }
+
 //Function Detune, SaturnRing
 
 async function playSaturnring() {
   await Tone.start();
 
   saturnSynth.triggerAttack(notes[i]);
-  console.log("Cursor entered Saturn");
 }
 
 function moveSaturnring(event) {
@@ -158,8 +204,6 @@ function moveSaturnring(event) {
 
   // Change the pitch while the note is playing
   saturnSynth.detune.value = detune;
-
-  console.log("X:", clampedX, "Detune:", detune);
 }
 
 function stopPlaySaturnring() {
@@ -172,17 +216,18 @@ function setup() {
   update(); // start the update loop
   use(); // start the use loop
 
-  //Drum2
+  //Neptune
   const neptune = createShape("neptune", "neptunePlanet");
-  //drum1
+  //Mars
   const mars = createShape("mars", "marsPlanet");
   //Saturn
   saturn = createShape("saturn", "saturnPlanet");
   //Saturn ring
   const saturnRing = createShape("saturnRing", "saturnRing");
 
-  //--------- Event listeners --------------------------------------------------
+  //--------- Event listeners ----------
 
+  window.addEventListener("pointermove", pointerMove);
   mars.element.addEventListener("pointerdown", toggleMars);
 
   neptune.element.addEventListener("mouseenter", playNeptune);
