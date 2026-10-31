@@ -27,7 +27,7 @@ import { createShape } from "./shape.js";
 
 const notes = ["C2", "D2", "E2", "F2", "G2", "A2", "B2"];
 const marsNote = ["C2", "D2", "E2", "F2"];
-
+const neptuneNote = ["D2", "F2", "G3"];
 // ---------- State ----------
 
 let drumInterval = null;
@@ -69,6 +69,7 @@ function use() {
 
 // ---------- Controls (Event Handlers) ----------
 
+// -------------Function pointer move, screen---------------
 function pointerMove(event) {
   const now = performance.now();
 
@@ -98,14 +99,14 @@ function pointerMove(event) {
   reverb.wet.rampTo(reverbAmount, 0.1);
 }
 
-//Function Mars
+//-------------Functions Mars-------------------
 function playMars() {
   synth.triggerAttackRelease(marsNote[marsIndex], "8n");
 }
 
-// Change note when pressing M
+// Change note
 function changeNoteMars(event) {
-  if (event.key === "m") {
+  if (event.button === 2) {
     for (let k = 0; k < marsNote.length; k++) {
       if (k === marsIndex) {
         marsIndex++;
@@ -140,7 +141,7 @@ async function toggleMars() {
   }
 }
 
-//Function hover, Neptune
+//-------------Functions Neptune---------------
 function playNeptune() {
   console.log("Cursor entered Neptune!");
   synth.triggerAttack("D2");
@@ -165,6 +166,15 @@ async function toggleNeptune() {
   }
 }
 
+function playNeptuneChord(event) {
+  if (event.button === 2) {
+    for (let k = 0; k < marsNote.length; k++) {
+      synth.triggerAttackRelease(neptuneNote[k], "2n");
+    }
+  }
+}
+
+//--------------Functions Saturn-----------------
 // Saturn play note
 function playSaturn() {
   // Stop any previously playing note
@@ -185,20 +195,37 @@ function stopSaturn() {
   }
 }
 //pointerdown Saturn
-async function toggleNoteSaturn() {
+async function toggleNoteSaturn(event) {
   await Tone.start();
 
-  if (!keepPlayingSaturn) {
-    keepPlayingSaturn = true;
-    playSaturn();
-    console.log("Play Saturn");
-  } else {
-    keepPlayingSaturn = false;
-    stopSaturn();
-    console.log("Stop playing Saturn");
+  // LEFT CLICK: Start/stop Saturn
+  if (event.button === 0) {
+    // 0= left click
+    if (!keepPlayingSaturn) {
+      keepPlayingSaturn = true;
+      playSaturn();
+      console.log("Play Saturn");
+    } else {
+      keepPlayingSaturn = false;
+      stopSaturn();
+      console.log("Stop Saturn");
+    }
+  }
+
+  // RIGHT CLICK: Change note
+  if (event.button === 2) {
+    // 2= Right click
+    i = (i + 1) % notes.length;
+    console.log("Changed Saturn note:", notes[i]);
+
+    // If Saturn is playing, immediately play the new note
+    if (keepPlayingSaturn) {
+      playSaturn();
+    }
   }
 }
 
+//-------------Functions Saturn ring------------------
 //Function Detune, SaturnRing
 
 async function playSaturnring() {
@@ -247,11 +274,12 @@ function setup() {
   window.addEventListener("pointermove", pointerMove);
 
   mars.element.addEventListener("pointerdown", toggleMars);
-  document.addEventListener("keydown", changeNoteMars);
+  document.addEventListener("pointerdown", changeNoteMars);
 
   neptune.element.addEventListener("mouseenter", playNeptune);
   neptune.element.addEventListener("mouseleave", stopNeptune);
   neptune.element.addEventListener("pointerdown", toggleNeptune);
+  neptune.element.addEventListener("pointerdown", playNeptuneChord);
 
   saturnRing.element.addEventListener("mouseenter", playSaturnring);
   saturnRing.element.addEventListener("mousemove", moveSaturnring);
@@ -260,17 +288,10 @@ function setup() {
   saturn.element.addEventListener("mouseenter", playSaturn);
   saturn.element.addEventListener("mouseleave", stopSaturn);
   saturn.element.addEventListener("pointerdown", toggleNoteSaturn);
+  saturn.element.addEventListener("pointerdown", toggleNoteSaturn);
 
-  // Shift changes the note
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Shift" && !event.repeat) {
-      i = (i + 1) % notes.length;
-
-      // Change sound only if currently playing
-      if (playingNote !== null) {
-        playSaturn();
-      }
-    }
+  saturn.element.addEventListener("contextmenu", (event) => {
+    event.preventDefault();
   });
 }
 setup(); // Always remember to call setup()!

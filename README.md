@@ -1,6 +1,6 @@
 # My instrument
 
-**Play it here:** <!-- Paste your GitHub Pages link here, e.g. https://idbcourses.github.io/your-repo-name/ -->
+**Play it here:** <!-- Paste your GitHub Pages link here, e.g. https://idbcourses.github.io/your-repo-name/ --> https://idbcourses.github.io/ht26-a3-Ellan33/
 
 **Name:** <!-- name --> Ella Nedell, ar8228
 
@@ -10,22 +10,27 @@
 
 <!-- Fill in the table with a row for everything the player can do with the pointer: clicking, moving slowly or fast, moving in circles, holding still... Say what happens to the sound and to the shapes. If you added keys, give them rows too. -->
 
-| When you...      | The sound...                            | The shapes... |
-| ---------------- | --------------------------------------- | ------------- |
-| Click Mars       | Plays a C3 in intervals                 | Nothing yet   |
-| Hover Neptune    | Play a constent tune D2                 | Nothing yet   |
-| Click Neptune    | Keeps playing while mouse is outside    |               |
-| Hover Saturn     | Play one note in note array             |               |
-| "Shift"          | Changes note being played in note array |               |
-| Click saturn     | Keeps playing while mouse is outside    |               |
-| Hover saturnRing | In progress                             |               |
-|                  |                                         |               |
-|                  |                                         |               |
-|                  |                                         |               |
-|                  |                                         |               |
-|                  |                                         |               |
+| When you...              | The sound...                                                           | The shapes... |
+| ------------------------ | ---------------------------------------------------------------------- | ------------- |
+| Hover Neptune            | Play a constent note D2                                                | Nothing       |
+| Left click Neptune       | Keeps playing note while mouse is outside of the shape                 | Nothing       |
+| Right click Neptune      | Plays a chord                                                          | Nothing       |
+| Left click Mars          | Plays current note i array in intervals                                | Nothing       |
+| Right click Mars         | Changes note in array                                                  | Nothing       |
+| Hover Saturn             | Plays current note i array                                             | Nothing       |
+| Left click Saturn        | Keeps playing current note i array while mouse is outside of the shape | Nothing       |
+| Right click Saturn       | Changes note in array                                                  | Nothing       |
+| Hover saturnRing         | In progress                                                            | Nothing       |
+| Move mouse across screen | Changes reverb value based on speed                                    | Nothing       |
+|                          |                                                                        |               |
 
 <!-- Anything else a player needs to know: how to get started, a good thing to try first. -->
+
+Possible interactions with diffrent shapes
+Neptune: Hover, left click, right click
+Mars: Left click, right click
+Saturn: Hover, left click, right click
+Saturn Ring:
 
 ---
 
