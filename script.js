@@ -26,6 +26,7 @@ import { createShape } from "./shape.js";
 // ---------- Settings ----------
 
 const notes = ["C2", "D2", "E2", "F2", "G2", "A2", "B2"];
+const marsNote = ["C2", "D2", "E2", "F2"];
 
 // ---------- State ----------
 
@@ -35,12 +36,13 @@ let playingNote = null;
 let keepPlayingNeptune = false;
 let keepPlayingSaturn = false;
 let saturn;
+let marsIndex = 0;
 
 // Mouse movement
+let previousTime = 0;
 let previousX = 0;
 let previousY = 0;
 let mouseSpeed = 0;
-let speeds = [];
 
 // ---------- Sound ----------
 
@@ -66,8 +68,6 @@ function use() {
 }
 
 // ---------- Controls (Event Handlers) ----------
-
-let previousTime = 0;
 
 function pointerMove(event) {
   const now = performance.now();
@@ -96,13 +96,30 @@ function pointerMove(event) {
   const reverbAmount = Math.min(mouseSpeed / 1000, 0.9);
 
   reverb.wet.rampTo(reverbAmount, 0.1);
-
 }
 
 //Function Mars
 function playMars() {
-  synth.triggerAttackRelease("C2", "8n");
+  synth.triggerAttackRelease(marsNote[marsIndex], "8n");
 }
+
+// Change note when pressing M
+function changeNoteMars(event) {
+  if (event.key === "m") {
+    for (let k = 0; k < marsNote.length; k++) {
+      if (k === marsIndex) {
+        marsIndex++;
+
+        if (marsIndex >= marsNote.length) {
+          marsIndex = 0;
+        }
+        break;
+      }
+    }
+    console.log("Mars note:", marsNote[marsIndex]);
+  }
+}
+
 //function pointerdown, Mars
 async function toggleMars() {
   await Tone.start();
@@ -158,7 +175,7 @@ function playSaturn() {
   // Play current note
   playingNote = notes[i];
   synth.triggerAttack(playingNote);
-  console.log("playing note:", notes[i])
+  console.log("playing note:", notes[i]);
 }
 
 function stopSaturn() {
@@ -174,7 +191,7 @@ async function toggleNoteSaturn() {
   if (!keepPlayingSaturn) {
     keepPlayingSaturn = true;
     playSaturn();
-     console.log("Play Saturn")
+    console.log("Play Saturn");
   } else {
     keepPlayingSaturn = false;
     stopSaturn();
@@ -228,7 +245,9 @@ function setup() {
   //--------- Event listeners ----------
 
   window.addEventListener("pointermove", pointerMove);
+
   mars.element.addEventListener("pointerdown", toggleMars);
+  document.addEventListener("keydown", changeNoteMars);
 
   neptune.element.addEventListener("mouseenter", playNeptune);
   neptune.element.addEventListener("mouseleave", stopNeptune);
