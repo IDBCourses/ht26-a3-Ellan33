@@ -1,43 +1,43 @@
 /* No CSS transitions or animations: everything that moves is moved by your code. */
 
 .neptunePlanet {
-  width: 190px;
-  height: 190px;
+  width: 220px;
+  height: 220px;
   background-color: rgb(43, 43, 228);
   /* Positioned from the top-left of the window; setPosition() moves it from there. */
   position: absolute;
   top: 175px;
-  left: 100px;
+  left: 140px;
   border-radius: 50%;
 }
 
 .marsPlanet {
-  width: 200px;
-  height: 200px;
-  background-color: rgb(214, 87, 102);
+  width: 250px;
+  height: 250px;
+  background-color: rgb(199, 65, 81);
   position: absolute;
-  top: 410px;
-  left: 360px;
+  top: 400px;
+  left: 500px;
   border-radius: 50%;
 }
 
 .saturnPlanet {
-  width: 175px;
-  height: 175px;
+  width: 200px;
+  height: 200px;
   background-color: rgb(255, 181, 20);
   position: absolute;
   top: 100px;
-  left: 600px;
+  left: 850px;
   border-radius: 50%;
 }
 
 .saturnRing {
-  width: 275px;
-  height: 50px;
+  width: 300px;
+  height: 70px;
   background-color: rgb(167, 103, 30);
   position: absolute;
   top: 170px;
-  left: 550px;
+  left: 800px;
   border-radius: 50%;
   rotate: 10%;
 }

@@ -10,19 +10,19 @@
 
 <!-- Fill in the table with a row for everything the player can do with the pointer: clicking, moving slowly or fast, moving in circles, holding still... Say what happens to the sound and to the shapes. If you added keys, give them rows too. -->
 
-| When you...              | The sound...                                                           | The shapes... |
-| ------------------------ | ---------------------------------------------------------------------- | ------------- |
-| Hover Neptune            | Play a constent note D2                                                | Nothing       |
-| Left click Neptune       | Keeps playing note while mouse is outside of the shape                 | Nothing       |
-| Right click Neptune      | Plays a chord                                                          | Nothing       |
-| Left click Mars          | Plays current note i array in intervals                                | Nothing       |
-| Right click Mars         | Changes note in array                                                  | Nothing       |
-| Hover Saturn             | Plays current note i array                                             | Nothing       |
-| Left click Saturn        | Keeps playing current note i array while mouse is outside of the shape | Nothing       |
-| Right click Saturn       | Changes note in array                                                  | Nothing       |
-| Hover saturnRing         | In progress                                                            | Nothing       |
-| Move mouse across screen | Changes reverb value based on speed                                    | Nothing       |
-|                          |                                                                        |               |
+| When you...              | The sound...                                                                   | The shapes... |
+| ------------------------ | ------------------------------------------------------------------------------ | ------------- |
+| Hover Neptune            | Play a constent note D2                                                        | Nothing       |
+| Left click Neptune       | Keeps playing note while mouse is outside of the shape                         | Nothing       |
+| Right click Neptune      | Plays a chord                                                                  | Nothing       |
+| Left click Mars          | Plays current note i array in intervals                                        | Nothing       |
+| Right click Mars         | Changes note in array                                                          | Nothing       |
+| Hover Saturn             | Plays current note i array                                                     | Nothing       |
+| Left click Saturn        | Keeps playing current note i array while mouse is outside of the shape         | Nothing       |
+| Right click Saturn       | Changes note in array                                                          | Nothing       |
+| Hover saturnRing         | In progress                                                                    | Nothing       |
+| Move mouse across screen | Changes reverb value based on the avarage speed of the last 10 recorded speeds | Nothing       |
+|                          |                                                                                |               |
 
 <!-- Anything else a player needs to know: how to get started, a good thing to try first. -->
 
