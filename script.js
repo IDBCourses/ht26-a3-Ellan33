@@ -25,10 +25,11 @@ import { createShape } from "./shape.js";
 
 // ---------- Settings ----------
 
-const notes = ["C2", "D2", "E2", "F2", "G2", "A2", "B2"];
-const marsNote = ["C2", "D2", "E2", "F2"];
-
+const saturnNotes = ["C3", "D3", "E3", "F3", "G3", "A3", "B3"];
+const marsNotes = ["C2", "D2", "E2", "F2"];
+const neptuneNotes = ["C4", "E4", "G4", "B4"];
 // ---------- State ----------
+let speed = [];
 
 let drumInterval = null;
 let i = 0;
@@ -50,7 +51,7 @@ const saturnSynth = new Tone.Synth().toDestination(); // for SaturnRing
 const synth = new Tone.PolySynth(Tone.Synth);
 const reverb = new Tone.Reverb({
   decay: 2,
-  wet: 0,
+  wet: 0.6,
 }).toDestination();
 
 synth.connect(reverb);
@@ -69,6 +70,7 @@ function use() {
 
 // ---------- Controls (Event Handlers) ----------
 
+// ===== Function pointer move, screen =====
 function pointerMove(event) {
   const now = performance.now();
 
@@ -85,6 +87,8 @@ function pointerMove(event) {
   const distance = Math.sqrt(dx * dx + dy * dy);
   const time = (now - previousTime) / 1000;
 
+  // time cant be 0 or - for the calculations
+  if (time <= 0) return;
   // Calculate speed in pixels per second
   mouseSpeed = distance / time;
 
@@ -92,55 +96,22 @@ function pointerMove(event) {
   previousY = event.clientY;
   previousTime = now;
 
-  // Map speed to reverb
-  const reverbAmount = Math.min(mouseSpeed / 1000, 0.9);
+  speed.push(mouseSpeed);
+  if (speed.length > 10) {
+    speed.shift(); //takes away the oldest in array
+  }
+  let total = 0;
+  for (let i = 0; i < speed.length; i++) {
+    total = total + speed[i];
+  }
+  let speedAverage = total / speed.length;
 
+  // Map speed to reverb
+  const reverbAmount = Math.min(speedAverage / 1000, 0.9);
   reverb.wet.rampTo(reverbAmount, 0.1);
 }
 
-//Function Mars
-function playMars() {
-  synth.triggerAttackRelease(marsNote[marsIndex], "8n");
-}
-
-// Change note when pressing M
-function changeNoteMars(event) {
-  if (event.key === "m") {
-    for (let k = 0; k < marsNote.length; k++) {
-      if (k === marsIndex) {
-        marsIndex++;
-
-        if (marsIndex >= marsNote.length) {
-          marsIndex = 0;
-        }
-        break;
-      }
-    }
-    console.log("Mars note:", marsNote[marsIndex]);
-  }
-}
-
-//function pointerdown, Mars
-async function toggleMars() {
-  await Tone.start();
-
-  if (drumInterval === null) {
-    // Start the beat
-    playMars();
-    console.log("Play Mars");
-
-    drumInterval = setInterval(() => {
-      playMars();
-    }, 500);
-  } else {
-    // Stop the beat
-    clearInterval(drumInterval);
-    drumInterval = null;
-    console.log("Stop playing Mars");
-  }
-}
-
-//Function hover, Neptune
+// ===== Functions Neptune =====
 function playNeptune() {
   console.log("Cursor entered Neptune!");
   synth.triggerAttack("D2");
@@ -165,6 +136,57 @@ async function toggleNeptune() {
   }
 }
 
+function playNeptuneChord(event) {
+  if (event.button === 2) {
+    for (let k = 0; k < neptuneNotes.length; k++) {
+      synth.triggerAttackRelease(neptuneNotes[k], "2n");
+    }
+  }
+}
+
+// ===== Functions Mars =====
+function playMars() {
+  synth.triggerAttackRelease(marsNotes[marsIndex], "8n");
+}
+
+// Change note
+function changeNoteMars(event) {
+  if (event.button === 2) {
+    for (let k = 0; k < marsNotes.length; k++) {
+      if (k === marsIndex) {
+        marsIndex++;
+
+        if (marsIndex >= marsNotes.length) {
+          marsIndex = 0;
+        }
+        break;
+      }
+    }
+    console.log("Mars note:", marsNotes[marsIndex]);
+  }
+}
+
+//function pointerdown, Mars
+async function toggleMars() {
+  await Tone.start();
+
+  if (drumInterval === null) {
+    // Start the beat
+    playMars();
+    console.log("Play Mars");
+
+    drumInterval = setInterval(() => {
+      playMars();
+    }, 500);
+  } else {
+    // Stop the beat
+    clearInterval(drumInterval);
+    drumInterval = null;
+    console.log("Stop playing Mars");
+  }
+}
+
+// ===== Functions Saturn =====
 // Saturn play note
 function playSaturn() {
   // Stop any previously playing note
@@ -173,9 +195,9 @@ function playSaturn() {
   }
 
   // Play current note
-  playingNote = notes[i];
+  playingNote = saturnNotes[i];
   synth.triggerAttack(playingNote);
-  console.log("playing note:", notes[i]);
+  console.log("playing note:", saturnNotes[i]);
 }
 
 function stopSaturn() {
@@ -185,26 +207,43 @@ function stopSaturn() {
   }
 }
 //pointerdown Saturn
-async function toggleNoteSaturn() {
+async function toggleNoteSaturn(event) {
   await Tone.start();
 
-  if (!keepPlayingSaturn) {
-    keepPlayingSaturn = true;
-    playSaturn();
-    console.log("Play Saturn");
-  } else {
-    keepPlayingSaturn = false;
-    stopSaturn();
-    console.log("Stop playing Saturn");
+  // LEFT CLICK: Start/stop Saturn
+  if (event.button === 0) {
+    // 0= left click
+    if (!keepPlayingSaturn) {
+      keepPlayingSaturn = true;
+      playSaturn();
+      console.log("Play Saturn");
+    } else {
+      keepPlayingSaturn = false;
+      stopSaturn();
+      console.log("Stop Saturn");
+    }
+  }
+
+  // RIGHT CLICK: Change note
+  if (event.button === 2) {
+    // 2= Right click
+    i = (i + 1) % saturnNotes.length;
+    console.log("Changed Saturn note:", saturnNotes[i]);
+
+    // If Saturn is playing, immediately play the new note
+    if (keepPlayingSaturn) {
+      playSaturn();
+    }
   }
 }
 
+// ===== Functions Saturn ring =====
 //Function Detune, SaturnRing
 
 async function playSaturnring() {
   await Tone.start();
 
-  saturnSynth.triggerAttack(notes[i]);
+  saturnSynth.triggerAttack(saturnNotes[i]);
 }
 
 function moveSaturnring(event) {
@@ -244,33 +283,31 @@ function setup() {
 
   //--------- Event listeners ----------
 
+  // === Mouse across screen ===
   window.addEventListener("pointermove", pointerMove);
 
-  mars.element.addEventListener("pointerdown", toggleMars);
-  document.addEventListener("keydown", changeNoteMars);
-
+  // === Neptune ===
   neptune.element.addEventListener("mouseenter", playNeptune);
   neptune.element.addEventListener("mouseleave", stopNeptune);
   neptune.element.addEventListener("pointerdown", toggleNeptune);
+  neptune.element.addEventListener("pointerdown", playNeptuneChord);
 
-  saturnRing.element.addEventListener("mouseenter", playSaturnring);
-  saturnRing.element.addEventListener("mousemove", moveSaturnring);
-  saturnRing.element.addEventListener("mouseleave", stopPlaySaturnring);
+  // === Mars ===
+  mars.element.addEventListener("pointerdown", toggleMars);
+  mars.element.addEventListener("pointerdown", changeNoteMars);
 
+  // === Saturn ===
   saturn.element.addEventListener("mouseenter", playSaturn);
   saturn.element.addEventListener("mouseleave", stopSaturn);
   saturn.element.addEventListener("pointerdown", toggleNoteSaturn);
 
-  // Shift changes the note
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Shift" && !event.repeat) {
-      i = (i + 1) % notes.length;
-
-      // Change sound only if currently playing
-      if (playingNote !== null) {
-        playSaturn();
-      }
-    }
+  saturn.element.addEventListener("contextmenu", (event) => {
+    event.preventDefault();
   });
+
+  // === SaturnRing ===
+  saturnRing.element.addEventListener("mouseenter", playSaturnring);
+  saturnRing.element.addEventListener("mousemove", moveSaturnring);
+  saturnRing.element.addEventListener("mouseleave", stopPlaySaturnring);
 }
 setup(); // Always remember to call setup()!
