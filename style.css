@@ -1,13 +1,62 @@
 /* No CSS transitions or animations: everything that moves is moved by your code. */
 
 .neptunePlanet {
-  width: 220px;
-  height: 220px;
+  width: 260px;
+  height: 260px;
   background-color: rgb(43, 43, 228);
   /* Positioned from the top-left of the window; setPosition() moves it from there. */
   position: absolute;
-  top: 175px;
+  top: 155px;
   left: 140px;
+  border-radius: 50%;
+}
+
+
+.neptuneNote1 {
+  width: 30px;
+  height: 170px;
+  background-color:  rgb(70, 98, 255);
+  /* Positioned from the top-left of the window; setPosition() moves it from there. */
+  position: absolute;
+  top: 135px;
+  left: 190px;
+  rotate: 45deg;
+  border-radius: 50%;
+}
+
+.neptuneNote2 {
+  width: 40px;
+  height: 240px;
+  background-color: rgb(38, 38, 196);
+  /* Positioned from the top-left of the window; setPosition() moves it from there. */
+  position: absolute;
+  top: 140px;
+  left: 225px;
+  rotate: 45deg;
+  border-radius: 50%;
+}
+
+.neptuneNote3 {
+  width: 40px;
+  height: 250px;
+  background-color:  rgb(62, 90, 249);
+  /* Positioned from the top-left of the window; setPosition() moves it from there. */
+  position: absolute;
+  top: 180px;
+  left: 270px;
+  rotate: 45deg;
+  border-radius: 50%;
+}
+
+.neptuneNote4 {
+  width: 30px;
+  height: 195px;
+  background-color: rgb(37, 37, 189);
+  /* Positioned from the top-left of the window; setPosition() moves it from there. */
+  position: absolute;
+  top: 245px;
+  left: 310px;
+  rotate: 45deg;
   border-radius: 50%;
 }
 
@@ -34,7 +83,7 @@
 .saturnRing {
   width: 300px;
   height: 70px;
-  background-color: rgb(167, 103, 30);
+  background-color: rgb(194, 125, 46);
   position: absolute;
   top: 170px;
   left: 800px;
