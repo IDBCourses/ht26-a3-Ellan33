@@ -12,25 +12,32 @@
 
 | When you...              | The sound...                                                                   | The shapes... |
 | ------------------------ | ------------------------------------------------------------------------------ | ------------- |
-| Hover Neptune            | Play a constent note D2                                                        | Nothing       |
-| Left click Neptune       | Keeps playing note while mouse is outside of the shape                         | Nothing       |
-| Right click Neptune      | Plays a chord                                                                  | Nothing       |
-| Left click Mars          | Plays current note i array in intervals                                        | Nothing       |
-| Right click Mars         | Changes note in array                                                          | Nothing       |
-| Hover Saturn             | Plays current note i array                                                     | Nothing       |
-| Left click Saturn        | Keeps playing current note i array while mouse is outside of the shape         | Nothing       |
-| Right click Saturn       | Changes note in array                                                          | Nothing       |
-| Hover saturnRing         | In progress                                                                    | Nothing       |
+| Click Neptune            | Plays a chord array, ["C4", "E4", "G4", "B4"]                                  | Nothing       |
+| Hover NeptuneNote1       | Plays note C4 while the mouse is over the shape                                | Nothing       |
+| Hover NeptuneNote2       | Plays note E4 while the mouse is over the shape                                | Nothing       |
+| Hover NeptuneNote3       | Plays note G4 while the mouse is over the shape                                | Nothing       |
+| Hover NeptuneNote4       | Plays note B4 while the mouse is over the shape                                | Nothing       |
+| Click NeptuneNote1       | Play a constent note, C4                                                       | Nothing       |
+| Click NeptuneNote2       | Play a constent note, E4                                                       | Nothing       |
+| Click NeptuneNote3       | Play a constent note, G4                                                       | Nothing       |
+| Click NeptuneNote4       | Play a constent note, B4                                                       | Nothing       |
+| Left click Mars          | Plays current note in array in intervals, ["C2", "D2", "E2", "F2"]             | Nothing       |
+| Right click Mars         | Changes note being played in array                                             | Nothing       |
+| Hover Saturn             | Plays current note i array, ["C3", "D3", "E3", "F3", "G3", "A3", "B3"]         | Nothing       |
+| Left click Saturn        | Keeps playing current note in array while mouse is outside of the shape        | Nothing       |
+| Right click Saturn       | Changes note being played in array                                             | Nothing       |
+| Move around saturnRing   | Changes the pitch                                                              | Nothing       |
 | Move mouse across screen | Changes reverb value based on the avarage speed of the last 10 recorded speeds | Nothing       |
 |                          |                                                                                |               |
 
 <!-- Anything else a player needs to know: how to get started, a good thing to try first. -->
 
-Possible interactions with diffrent shapes
-Neptune: Hover, left click, right click
-Mars: Left click, right click
-Saturn: Hover, left click, right click
-Saturn Ring:
+**Possible interactions with diffrent shapes**
+**Neptune:** Click
+**Ovals in neptune:** Hover, click
+**Mars:** Left click, right click
+**Saturn:** Hover, left click, right click
+**Saturn Ring:** Move the mouse around
 
 ---
 
