@@ -48,21 +48,21 @@ let keepPlayingNeptuneNote4 = false;
 //mars
 let marsIndex = 0;
 let drumInterval = null;
-let i = 0;
-let playingNote = null;
 
-//saturn
+//saturn & saturnRing
+let playingNote = null;
 let keepPlayingSaturn = false;
 let saturn;
+let i = 0;
 
 // ---------- Sound ----------
 
 const saturnSynth = new Tone.Synth().toDestination(); // for SaturnRing
-const synth = new Tone.PolySynth(Tone.Synth);
+const synth = new Tone.PolySynth(Tone.Synth); //Synth
 const reverb = new Tone.Reverb({
   decay: 2,
   wet: 0.6,
-}).toDestination();
+}).toDestination(); //Reverb
 
 synth.connect(reverb);
 
@@ -122,6 +122,7 @@ function pointerMove(event) {
 }
 
 // ===== Functions Neptune =====
+//Neptune chord
 function playNeptune() {
   console.log("Playing Neptune chord!");
 
@@ -131,11 +132,13 @@ function playNeptune() {
 }
 
 function stopNeptune() {
+  console.log("Stop playing Neptune chord");
   for (let k = 0; k < neptuneNotes.length; k++) {
     synth.triggerRelease(neptuneNotes[k]);
   }
 }
 
+//pointerdown, Neptune
 async function toggleNeptune() {
   await Tone.start();
 
@@ -157,7 +160,7 @@ function stopNeptuneNote1() {
   synth.triggerRelease("C4");
 }
 
-//function pointerdown, Neptune
+//pointerdown, NeptuneNote1
 async function toggleNeptuneNote1() {
   await Tone.start();
 
@@ -180,7 +183,7 @@ function stopNeptuneNote2() {
   synth.triggerRelease("E4");
 }
 
-//function pointerdown, Neptune
+//pointerdown, NeptuneNote2
 async function toggleNeptuneNote2() {
   await Tone.start();
 
@@ -203,7 +206,7 @@ function stopNeptuneNote3() {
   synth.triggerRelease("G4");
 }
 
-//function pointerdown, Neptune
+//pointerdown, NeptuneNote3
 async function toggleNeptuneNote3() {
   await Tone.start();
 
@@ -227,7 +230,7 @@ function stopNeptuneNote4() {
   synth.triggerRelease("B4");
 }
 
-//function pointerdown, Neptune
+//pointerdown, NeptuneNote4
 async function toggleNeptuneNote4() {
   await Tone.start();
 
@@ -290,6 +293,7 @@ function playSaturn() {
   console.log("playing note:", saturnNotes[i]);
 }
 
+//Stop note
 function stopSaturn() {
   if (!keepPlayingSaturn && playingNote !== null) {
     synth.triggerRelease(playingNote);
@@ -331,7 +335,7 @@ async function toggleNoteSaturn(event) {
 
 async function playSaturnring() {
   await Tone.start();
-
+  console.log("SaturnRing Note:", saturnNotes[i]);
   saturnSynth.triggerAttack(saturnNotes[i]);
 }
 
